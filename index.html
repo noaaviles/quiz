@@ -3,33 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
+    <title>Finish the Lyrics</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@100..900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #faf9f9;
+            color: #203a3d;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            background-color: #ECDDDA;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 1000px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 40px;
+            color: #203a3d;
+        }
+
+        .start-screen, .end-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .start-text, .end-text {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 50px;
+            max-width: 800px;
+        }
+
+        .play-button, .restart-button {
+            background-color: #DF539A;
+            color: #F1ECE9;
+            border: none;
+            padding: 15px 60px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover, .restart-button:hover {
+            background-color: #bf4783;
+            transform: translateY(-3px);
+        }
+
+        .question-container {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+        }
+
+        .image-section {
+            flex: 0 0 40%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .singer-image {
+            width: 100%;
+            height: 350px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .singer-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .song-info {
+            background-color: #F1ECE9;
+            color: #203a3d;
+            padding: 15px;
+            border-radius: 0 0 15px 15px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .question-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .question {
+            background-color: #de5499;
+            padding: 20px;
+            border-radius: 15px;
+            color: #f2ebe9;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .answer-choice {
+            background-color: #f2ebe9;
+            color: #203a3d;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 15px;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            width: 100%;
+        }
+
+        .answer-choice:hover {
+            background-color: #faf9f9;
+            transform: translateY(-3px);
+        }
+
+        .answer-choice.clicked {
+            background-color: #EA5C4C;
+            color: #F1ECE9; 
+        }
+
+        .answer-choice.clicked.correct {
+            background-color: #3d9970;
+            color: #F1ECE9; 
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .score-display {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #3d9970;
+        }
+
+        .trophies {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .trophy {
+            font-size: 4rem;
+            margin: 0 10px;
+            color: gold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Web Quiz</h1>
+    <div class="quiz-container">
+        <div class="start-screen" id="start-screen">
+            <h1>Finish the Lyrics</h1>
+            <p class="start-text">
+                Think you're the human Shazam? Let's put your music knowledge to the test!
+                Guess the missing lyrics from iconic songs and see how many you can get right!
+            </p>
+            <button class="play-button" onclick="startQuiz()">Play</button>
+        </div>
 
-    <h2>How should you NOT refer to JavaScript?</h2>
+        <div class="question-container hidden" id="q1">
+            <div class="image-section">
+                <div class="singer-image">
+                    <img src="https://i.scdn.co/image/ab67616d0000b2737110a2b3dc32dc1224b7670f" alt="Queen">
+                </div>
+                <div class="song-info">Bohemian Rhapsody / Queen</div>
+            </div>
+            <div class="question-section">
+                <div class="question">"Is this the real life? Is this just _______?"</div>
+                <button class="answer-choice" onclick="check(this, 'q1')">a dream</button>
+                <button class="answer-choice" onclick="check(this, 'q1')">my mind</button>
+                <button class="answer-choice" onclick="check(this, 'q1')">reality</button>  
+                <button class="answer-choice correct" onclick="check(this, 'q1')">fantasy</button>
+            </div>
+        </div>
 
-    <button onclick="check(this)">JS</button>
-    <button onclick="check(this)">VanillaJS</button> 
-    <button onclick="check(this)" class="correct">Java</button>  
+        <div class="question-container hidden" id="q2">
+            <div class="image-section">
+                <div class="singer-image">
+                    <img src="https://m.media-amazon.com/images/I/71gO33uDjOL.jpg" alt="Beyoncé">
+                </div>
+                <div class="song-info">Single Ladies / Beyoncé</div>
+            </div>
+            <div class="question-section">
+                <div class="question">"If you liked it, then you should have _______?"</div>
+                <button class="answer-choice" onclick="check(this, 'q2')">told me so</button> 
+                <button class="answer-choice" onclick="check(this, 'q2')">bought me drinks</button> 
+                <button class="answer-choice correct" onclick="check(this, 'q2')">put a ring on it</button>
+                <button class="answer-choice" onclick="check(this, 'q2')">make it known</button>
+            </div> 
+        </div>
 
-    <h2>What does the C in CSS stand for?</h2>
+        <div class="question-container hidden" id="q3">
+            <div class="image-section">
+                <div class="singer-image">
+                    <img src="https://m.media-amazon.com/images/I/81ZE9QOdmnL._UF1000,1000_QL80_.jpg" alt="Journey">
+                </div>
+                <div class="song-info">Don't Stop Believin' / Journey</div>
+            </div>
+            <div class="question-section">
+                <div class="question">"Just a small town girl, livin in a _______?"</div>
+                <button class="answer-choice" onclick="check(this, 'q3')">crazy place</button> 
+                <button class="answer-choice" onclick="check(this, 'q3')">small world</button> 
+                <button class="answer-choice correct" onclick="check(this, 'q3')">lonely world</button>
+                <button class="answer-choice" onclick="check(this, 'q3')">lonely place</button>
+            </div>
+        </div>
 
-    <button onclick="check(this)" class="correct">Cascading</button>
-    <button onclick="check(this)">Cat</button> 
-    <button onclick="check(this)">Compounding</button>  
-  
-  <script> 
-    function check(button) {
-        if (button.classList.contains("correct")) {
-            button.style.background = "green";
-        } else {
-            button.style.background = "red";
+        <div class="question-container hidden" id="q4">
+            <div class="image-section">
+                <div class="singer-image">
+                    <img src="https://i.scdn.co/image/ab67616d0000b27370f7a1b35d5165c85b95a0e0" alt="ABBA">
+                </div>
+                <div class="song-info">Dancing Queen / ABBA</div>
+            </div>
+            <div class="question-section">
+                <div class="question">"You can dance, you can jive, having the _______?"</div>
+                <button class="answer-choice" onclick="check(this, 'q4')">best of times</button> 
+                <button class="answer-choice correct" onclick="check(this, 'q4')">time of your life</button>
+                <button class="answer-choice" onclick="check(this, 'q4')">night of your life</button> 
+                <button class="answer-choice" onclick="check(this, 'q4')">dance of your life</button>
+            </div>
+        </div>
+
+        <div class="question-container hidden" id="q5">
+            <div class="image-section">
+                <div class="singer-image">
+                    <img src="https://m.media-amazon.com/images/I/71G585UxwmL._AC_UF1000,1000_QL80_.jpg" alt="Miley Cyrus">
+                </div>
+                <div class="song-info">Party in the USA / Miley Cyrus</div>
+            </div>
+            <div class="question-section">
+                <div class="question">"So I put my hands up. They're playin' my song. The butterflies _______??"</div>
+                <button class="answer-choice correct" onclick="check(this, 'q5')">fly away</button>
+                <button class="answer-choice" onclick="check(this, 'q5')">dance today</button> 
+                <button class="answer-choice" onclick="check(this, 'q5')">light the way</button> 
+                <button class="answer-choice" onclick="check(this, 'q5')">start to sway</button> 
+            </div>
+        </div>
+
+        <div class="end-screen hidden" id="end-screen">
+            <h1>Congratulations!</h1>
+            <div class="trophies">
+                <div class="trophy">🏆</div>
+                <div class="trophy">🎵</div>
+                <div class="trophy">🏆</div>
+            </div>
+            <div class="score-display">Your Score: <span id="final-score">0</span>/5</div>
+            <p class="end-text">
+                Great job! You've completed the Finish the Lyrics quiz. 
+                Your music knowledge is impressive! 
+                Ready to test yourself again?
+            </p>
+            <button class="restart-button" onclick="restartQuiz()">Play Again</button>
+        </div>
+    </div>
+
+    <script> 
+        let score = 0;
+        
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('q1').classList.remove('hidden');
         }
-        console.log(button);
-    }
-
-  </script>
+        
+        function check(button, questionId) {
+            button.classList.add("clicked");
+            
+            // Check if this is the correct answer
+            if (button.classList.contains('correct')) {
+                score++;
+            }
+    
+            // Disable all buttons within the current question
+            let questionContainer = document.getElementById(questionId);
+            let buttons = questionContainer.querySelectorAll('.answer-choice');
+            for (let btn of buttons) {
+                btn.disabled = true;
+            }
+    
+            // Move to the next question after a delay
+            setTimeout(() => { next(questionId); }, 2000);
+        }
+        
+        function next(currentQuestionId) {
+            // Hide the current question
+            let currentQuestion = document.getElementById(currentQuestionId);
+            currentQuestion.classList.add('hidden');
+    
+            // Determine the next question number
+            let currentNumber = parseInt(currentQuestionId.substring(1));
+            let nextNumber = currentNumber + 1;
+            let nextQuestionId = 'q' + nextNumber;
+            
+            // Show the next question, if it exists
+            let nextQuestion = document.getElementById(nextQuestionId);
+            if (nextQuestion) {
+                nextQuestion.classList.remove('hidden');
+            } else {
+                // If no next question, show end screen
+                document.getElementById('final-score').textContent = score;
+                document.getElementById('end-screen').classList.remove('hidden');
+            }
+        }
+        
+        function restartQuiz() {
+            // Reset score
+            score = 0;
+            
+            // Hide all questions and end screen
+            document.querySelectorAll('.question-container, #end-screen').forEach(elem => {
+                elem.classList.add('hidden');
+            });
+            
+            // Reset all buttons
+            document.querySelectorAll('.answer-choice').forEach(btn => {
+                btn.classList.remove('clicked');
+                btn.disabled = false;
+            });
+            
+            // Show start screen
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
